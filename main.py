@@ -1,3 +1,4 @@
+import json
 from fastapi import FastAPI
 from datetime import datetime
 from dotenv import load_dotenv
@@ -17,11 +18,27 @@ def getWeather():
         #request to weather Api
         response = requests.get(weatherApi)
 
-        info = response.json()
+        #change response to text
+        data = response.text
+
+        info = json.loads(data)
+
+        for day in info['days']:
+            date = day['datetime']
+            temp = day['temp']
+            temp_ressenti = day['feelslike']
 
         #extract required information
+        weather_info ={
+            'city': info['address'],
+            'description': info['description'],
+            'date': date,
+            'temp': temp,
+            'temp_r':temp_ressenti
+            
+        }
 
-        return info 
+        return weather_info 
     
     except Exception as e:
         print(e)
