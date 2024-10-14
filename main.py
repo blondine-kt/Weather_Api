@@ -1,17 +1,22 @@
+import sys, os
 import json
 from fastapi import FastAPI
 from datetime import datetime
 from dotenv import load_dotenv
 import requests
 import uvicorn
+
 load_dotenv()
 
 app = FastAPI()
 
-def getWeather():
+def getWeather(city):
+
+    api_key =  os.environ["API_KEY"]
+    
     
     #wether Api url
-    weatherApi = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Montreal?unitGroup=metric&key=J5MMVZLHCQJJYQJB6LF7546WY&contentType=json'
+    weatherApi = f'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{city}l?unitGroup=metric&key={api_key}&contentType=json'
 
     try:
 
@@ -44,11 +49,11 @@ def getWeather():
         print(e)
 
 
-@app.get("/weather_info")
-async def get_weather_info():
+@app.get("/weather_info/")
+async def get_weather_info(city):
 
     #retourne l'info sur la meteo
-    weather = getWeather()
+    weather = getWeather(city)
 
     return weather
 
