@@ -25,7 +25,8 @@ def getWeather(city):
 
         #change response to text
         data = response.text
-
+         
+         
         info = json.loads(data)
 
         for day in info['days']:
@@ -43,10 +44,19 @@ def getWeather(city):
             
         }
 
-        return weather_info 
+        
     
     except Exception as e:
         print(e)
+        weather_info ={
+            'city': "NA",
+            'description':"NA",
+            'date': "NA",
+            'temp': "NA",
+            'temp_r':"NA"
+            
+        }
+    return weather_info     
 
 
 @app.get("/weather_info/")
